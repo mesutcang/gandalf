@@ -5,13 +5,12 @@ import com.todoapp.model.Todo;
 import com.todoapp.service.TodoService;
 import com.todoapp.validator.TodoValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -44,12 +43,8 @@ public class TodoController extends BaseAbstractController {
             return "addtodo";
         }
 
-        try {
-            todoService.save(todo);
-        } catch (Exception e) {
-            setCustomMessageModelMessages(todo, model, e.getMessage());
-            return "addtodo";
-        }
+        todoService.save(todo);
+
 
         return "redirect:/welcome";
     }
@@ -59,6 +54,7 @@ public class TodoController extends BaseAbstractController {
         return "todolist";
     }
 
-
+    @ExceptionHandler(value = Exception.class)
+    public String handleException(Exception e){return "error";}
 
 }
