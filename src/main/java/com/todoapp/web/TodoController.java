@@ -5,6 +5,7 @@ import com.todoapp.model.Todo;
 import com.todoapp.service.TodoService;
 import com.todoapp.validator.TodoValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,18 +44,17 @@ public class TodoController extends BaseAbstractController {
             return "addtodo";
         }
 
-        todoService.save(todo);
+        //todoService.save(todo);
 
 
-        return "redirect:/welcome";
+        //return "redirect:/welcome";
+
+        throw new DataIntegrityViolationException("Error");
     }
 
     @RequestMapping(value = {"/todo-list"})
     public String addList(final Model model) {
         return "todolist";
     }
-
-    @ExceptionHandler(value = Exception.class)
-    public String handleException(Exception e){return "error";}
 
 }
